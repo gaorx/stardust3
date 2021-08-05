@@ -1,20 +1,23 @@
 package sderr
 
 import (
+	stderrors "errors"
+
 	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
 )
 
 var (
 	// New
-	New    = errors.New
-	Errorf = errors.Errorf
-	Prefix = multierror.Prefix
+	New   = errors.New
+	Newf  = errors.Errorf
+	Guard = stderrors.New
 
 	// With
 	WithStack    = errors.WithStack
 	WithMessage  = errors.WithMessage
 	WithMessagef = errors.WithMessagef
+	WithPrefix   = multierror.Prefix
 	Wrap         = errors.Wrap
 	Wrapf        = errors.Wrapf
 
@@ -52,7 +55,7 @@ func Select(err1, err2 error) error {
 	}
 }
 
-func Concurrently(funcs ...func() error) *MultipleError {
+func Concurrently(funcs []func() error) *MultipleError {
 	var g Group
 	for _, f := range funcs {
 		g.Go(f)
