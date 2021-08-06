@@ -42,23 +42,3 @@ type (
 	ErrorFormatFunc = multierror.ErrorFormatFunc
 	Group           = multierror.Group
 )
-
-func Select(err1, err2 error) error {
-	if err1 == nil && err2 == nil {
-		return nil
-	} else if err1 != nil && err2 != nil {
-		return Append(err1, err2)
-	} else if err1 != nil {
-		return err1
-	} else {
-		return err2
-	}
-}
-
-func Concurrently(funcs []func() error) *MultipleError {
-	var g Group
-	for _, f := range funcs {
-		g.Go(f)
-	}
-	return g.Wait()
-}
