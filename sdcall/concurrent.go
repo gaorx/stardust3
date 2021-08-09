@@ -7,7 +7,7 @@ import (
 	"github.com/gaorx/stardust3/sderr"
 )
 
-func Concurrent(funcs []func()) {
+func ConcurrentFunc(funcs []func()) {
 	if len(funcs) == 0 {
 		return
 	}
@@ -22,7 +22,7 @@ func Concurrent(funcs []func()) {
 	wg.Wait()
 }
 
-func ConcurrentFor(arr interface{}, f func(elem interface{})) error {
+func ConcurrentSlice(arr interface{}, f func(elem interface{})) error {
 	arr1 := reflect.ValueOf(arr)
 	if arr1.Kind() != reflect.Slice && arr1.Kind() != reflect.Array {
 		return sderr.New("the param(arr) is not array or slice")
@@ -30,11 +30,11 @@ func ConcurrentFor(arr interface{}, f func(elem interface{})) error {
 	if arr1.Len() == 0 {
 		return nil
 	}
-	concurrentFor(arr1, f)
+	concurrentSlice(arr1, f)
 	return nil
 }
 
-func concurrentFor(arr1 reflect.Value, f func(elem interface{})) {
+func concurrentSlice(arr1 reflect.Value, f func(elem interface{})) {
 	var wg sync.WaitGroup
 	for i := 0; i < arr1.Len(); i++ {
 		elem := arr1.Index(i)

@@ -9,9 +9,9 @@ import (
 
 var (
 	// New
-	New   = errors.New
-	Newf  = errors.Errorf
-	Guard = stderrors.New
+	New      = errors.New
+	Newf     = errors.Errorf
+	Sentinel = stderrors.New
 
 	// With
 	WithStack    = errors.WithStack
