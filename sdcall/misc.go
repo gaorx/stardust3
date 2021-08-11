@@ -5,6 +5,9 @@ import (
 )
 
 func Retry(maxRetries int, f func() error) error {
+	if f == nil {
+		return nil
+	}
 	err0 := f()
 	if err0 == nil {
 		return nil
@@ -22,12 +25,16 @@ func Retry(maxRetries int, f func() error) error {
 }
 
 func Safe(f func()) (err error) {
+	if f == nil {
+		err = nil
+		return
+	}
+
 	defer func() {
 		if err0 := recover(); err0 != nil {
 			err = sderr.ToErr(err0)
 		}
 	}()
-
 	f()
 	return
 }

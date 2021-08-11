@@ -1,48 +1,51 @@
 package sdcall
 
 import (
-	"reflect"
 	"sync"
 
 	"github.com/gaorx/stardust3/sderr"
 )
 
-func ConcurrentFunc(funcs []func()) {
-	if len(funcs) == 0 {
-		return
-	}
-	var wg sync.WaitGroup
-	for _, action := range funcs {
-		wg.Add(1)
-		go func(f func()) {
-			defer wg.Done()
-			f()
-		}(action)
-	}
-	wg.Wait()
-}
-
-func ConcurrentSlice(arr interface{}, f func(elem interface{})) error {
-	arr1 := reflect.ValueOf(arr)
-	if arr1.Kind() != reflect.Slice && arr1.Kind() != reflect.Array {
-		return sderr.New("the param(arr) is not array or slice")
-	}
-	if arr1.Len() == 0 {
+func Concurrent(concurrency int, funcs []func()) error {
+	nFuncs := len(funcs)
+	if nFuncs == 0 {
 		return nil
 	}
-	concurrentSlice(arr1, f)
-	return nil
-}
-
-func concurrentSlice(arr1 reflect.Value, f func(elem interface{})) {
-	var wg sync.WaitGroup
-	for i := 0; i < arr1.Len(); i++ {
-		elem := arr1.Index(i)
-		wg.Add(1)
-		go func(elem interface{}) {
-			defer wg.Done()
-			f(elem)
-		}(elem.Interface())
+	if concurrency <= 0 {
+		var wg sync.WaitGroup
+		for _, f := range funcs {
+			wg.Add(1)
+			go func(f func()) {
+				defer wg.Done()
+				Safe(f)
+			}(f)
+		}
+		wg.Wait()
+		return nil
+	} else {
+		if concurrency > nFuncs {
+			concurrency = nFuncs
+		}
+		pool, err := NewPool(concurrency, &PoolOptions{
+			PreAlloc: true,
+		})
+		if err != nil {
+			return sderr.WithStack(err)
+		}
+		defer pool.Close()
+		var wg sync.WaitGroup
+		for _, f := range funcs {
+			f1 := f
+			wg.Add(1)
+			err := pool.Submit(func() {
+				defer wg.Done()
+				Safe(f1)
+			})
+			if err != nil {
+				return sderr.WithStack(err)
+			}
+		}
+		wg.Wait()
+		return nil
 	}
-	wg.Wait()
 }
