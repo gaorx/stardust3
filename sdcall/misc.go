@@ -2,6 +2,7 @@ package sdcall
 
 import (
 	"reflect"
+	"time"
 
 	"github.com/gaorx/stardust3/sderr"
 )
@@ -39,6 +40,14 @@ func Safe(f func()) (err error) {
 	}()
 	f()
 	return
+}
+
+func Time(f func()) time.Duration {
+	startAt := time.Now()
+	if f != nil {
+		f()
+	}
+	return time.Since(startAt)
 }
 
 func Fuse(arrayLike interface{}, f func(int, interface{})) []func() {
