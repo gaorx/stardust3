@@ -49,3 +49,8 @@ func Concurrent(concurrency int, funcs []func()) error {
 		return nil
 	}
 }
+
+func ConcurrentArray(concurrency int, arrayLike interface{}, f func(int, interface{})) error {
+	err := Concurrent(concurrency, Fuse(arrayLike, f))
+	return sderr.WithStack(err)
+}
