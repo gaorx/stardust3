@@ -7,4 +7,5 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/panjf2000/ants/v2 v2.4.6 // indirect
 	github.com/pkg/errors v0.9.1
+	golang.org/x/text v0.3.7 // indirect
 )

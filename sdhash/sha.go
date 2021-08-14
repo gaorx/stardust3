@@ -6,37 +6,37 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 
-	"github.com/gaorx/stardust3/sdbytes"
+	"github.com/gaorx/stardust3/sdencoding"
 )
 
-func Sha1(data []byte) sdbytes.Packet {
+func Sha1Hash(data []byte) sdencoding.Bytes {
 	sum := sha1.Sum(data)
 	return sum[:]
 }
 
-func Sha256(data []byte) sdbytes.Packet {
+func Sha256Hash(data []byte) sdencoding.Bytes {
 	sum := sha256.Sum256(data)
 	return sum[:]
 }
 
-func Sha512(data []byte) sdbytes.Packet {
+func Sha512Hash(data []byte) sdencoding.Bytes {
 	sum := sha512.Sum512(data)
 	return sum[:]
 }
 
-func HmacSha1(data, key []byte) sdbytes.Packet {
+func HmacSha1(data, key []byte) sdencoding.Bytes {
 	mac := hmac.New(sha1.New, key)
 	mac.Write(data)
 	return mac.Sum(nil)
 }
 
-func HmacSha256(data, key []byte) sdbytes.Packet {
+func HmacSha256(data, key []byte) sdencoding.Bytes {
 	mac := hmac.New(sha256.New, key)
 	mac.Write(data)
 	return mac.Sum(nil)
 }
 
-func HmacSha512(data, key []byte) sdbytes.Packet {
+func HmacSha512(data, key []byte) sdencoding.Bytes {
 	mac := hmac.New(sha512.New, key)
 	mac.Write(data)
 	return mac.Sum(nil)
