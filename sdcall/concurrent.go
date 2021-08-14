@@ -50,7 +50,7 @@ func Concurrent(concurrency int, funcs []func()) error {
 	}
 }
 
-func ConcurrentArray(concurrency int, arrayLike interface{}, f func(int, interface{})) error {
-	err := Concurrent(concurrency, Fuse(arrayLike, f))
+func ConcurrentFuse(concurrency int, arr interface{}, f func(int, interface{})) error {
+	err := Concurrent(concurrency, Fuse(arr, f))
 	return sderr.WithStack(err)
 }

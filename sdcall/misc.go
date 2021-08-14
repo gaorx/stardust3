@@ -50,11 +50,11 @@ func Time(f func()) time.Duration {
 	return time.Since(startAt)
 }
 
-func Fuse(arrayLike interface{}, f func(int, interface{})) []func() {
+func Fuse(arr interface{}, f func(int, interface{})) []func() {
 	if f == nil {
 		f = func(int, interface{}) {}
 	}
-	if interfaces, ok := arrayLike.([]interface{}); ok {
+	if interfaces, ok := arr.([]interface{}); ok {
 		if len(interfaces) <= 0 {
 			return []func(){}
 		}
@@ -67,13 +67,10 @@ func Fuse(arrayLike interface{}, f func(int, interface{})) []func() {
 		}
 		return funcs
 	} else {
-		arrayVal := reflect.ValueOf(arrayLike)
+		arrayVal := reflect.ValueOf(arr)
 		arrayTyp := arrayVal.Type()
 		if arrayTyp.Kind() != reflect.Slice && arrayTyp.Kind() != reflect.Array {
-			panic(&reflect.ValueError{
-				Method: "reflect.Value.Index",
-				Kind:   arrayTyp.Kind(),
-			})
+			panic(sderr.WithStack(sderr.ErrIllegalType))
 		}
 		arrayLen := arrayVal.Len()
 		if arrayLen <= 0 {
