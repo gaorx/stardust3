@@ -28,6 +28,7 @@ func Shuffle(arr interface{}) {
 		v1 := clone[newIndex]
 		arrVar.Index(i).Set(reflect.ValueOf(v1))
 	}
+	return
 }
 
 // TODO:ShuffleStrs
