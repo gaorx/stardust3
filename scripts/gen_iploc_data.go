@@ -66,7 +66,7 @@ func main() {
 }
 
 func printUsage() {
-	fmt.Println("go run scripts/update_iploc_data.go -jar=<com.xiaomi.ad:ip-utils_2.10:[ver] url or filepath>")
+	fmt.Println("go run scripts/update_iploc_data.go -jar=<url/file for ip-utils.jar>")
 }
 
 func readRecords(jarBytes []byte) ([]byte, error) {
