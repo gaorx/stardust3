@@ -15,7 +15,6 @@ type PoolOptions = ants.Options
 
 var (
 	ErrInvalidPoolExpiry   = ants.ErrInvalidPoolExpiry
-	ErrInvalidPoolSize     = ants.ErrInvalidPoolSize
 	ErrLackPoolFunc        = ants.ErrLackPoolFunc
 	ErrPoolClosed          = ants.ErrPoolClosed
 	ErrPoolOverload        = ants.ErrPoolOverload

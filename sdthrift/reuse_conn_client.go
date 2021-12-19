@@ -6,7 +6,7 @@ import (
 	"net"
 	"time"
 
-	"git.apache.org/thrift.git/lib/go/thrift"
+	"github.com/apache/thrift/lib/go/thrift"
 	connpool "github.com/fatih/pool"
 	"github.com/gaorx/stardust3/sdbackoff"
 	"github.com/gaorx/stardust3/sdcall"
